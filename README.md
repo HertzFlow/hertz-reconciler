@@ -91,13 +91,13 @@ go build -o chain-reconciler .
 ### Container build
 
 Pushes to `main` trigger `.github/workflows/build.yaml` → publishes
-`ghcr.io/hertzflow/chain-reconciler:<short-sha>` and `:latest`.
+`ghcr.io/hertzflow/hertz-reconciler:<short-sha>` and `:latest`.
 
 Manual:
 
 ```bash
-docker build -t ghcr.io/hertzflow/chain-reconciler:dev .
-docker push ghcr.io/hertzflow/chain-reconciler:dev
+docker build -t ghcr.io/hertzflow/hertz-reconciler:dev .
+docker push ghcr.io/hertzflow/hertz-reconciler:dev
 ```
 
 ### Kubernetes deploy
