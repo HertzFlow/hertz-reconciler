@@ -1,0 +1,5 @@
+# binaries
+/chain-reconciler
+# local secret/dev files
+deploy/secret.yaml
+.DS_Store

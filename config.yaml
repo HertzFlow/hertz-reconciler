@@ -1,0 +1,120 @@
+# Chain Reconciler — daily on-chain reconciliation for Hertz Protocol
+# All fields can be overridden via env vars (see internal/config/config.go)
+
+rpc:
+  url: https://bsc-testnet-dataseed.bnbchain.org
+  request_timeout: 30s
+  call_concurrency: 8
+
+scheduler:
+  # quick_interval: 高频检查（vault 余额、role 快照），输出到 metrics
+  quick_interval: 1h
+  # daily_at_utc: 每日报告发送时间 (UTC HH:MM)
+  daily_at_utc: "00:00"
+
+notify:
+  slack_webhook_env: SLACK_WEBHOOK_URL  # env var name; value loaded at runtime
+  enabled: true
+
+metrics:
+  port: 8080
+  path: /metrics
+
+log:
+  level: INFO
+
+# 按合约版本组织监控目标
+versions:
+  - name: v1
+    data_store: "0x61d4746598170E8ec96f90135307e329bcb3c244"
+    role_store: "0x9cA48a5BAf54fe16bbb360576f95c55cFCBf7810"
+    gov_timelock: "0x999869DbBD3d50204DA56bE89049029eA515671B"
+    config_timelock: "0x0a120436D8A6FBEa3D303Bc164966535f0a5BcaB"
+    usdt_token: "0x6335881872fecab922d1d83c6bae6e27c5a9209c"
+    vaults:
+      DepositVault: "0xcFe85354cfA01FD0D39b463Ef582987fDE499696"
+      WithdrawalVault: "0x3028e45D108F78eB5531E6C5CFaf7431064A7eE8"
+      OrderVault: "0xf6ada7B38267b10ad77cdeF8e301F5331e346E6D"
+      HlvVault: "0x5AC8b996C63f32Ca2F1bFC2f21f039C3b92553B8"
+      FeeDistributorVault: "0x4180e20e9d3F891a9F343C32dc6E13cE929BaFC7"
+      ClaimVault: "0xe09492e93FEc595CBEbb26Ca3D51B68E56F48ddB"
+      MultichainVault: "0xeF130981121cDcD5DeBa25c69A715613e9FCC711"
+    # Tier 0+1+2 markets (13) for param tracking
+    markets:
+      BTC:  "0x2c25607caf649a555c0e42cbdedba942774686fa"
+      ETH:  "0xc323abd1de2435df6adf3f4a2f7cd92bf118c3d1"
+      BNB:  "0xe27ae94b715b00320bcfa4a7418a96aa2d879c17"
+      DOGE: "0xbc34dfe27766890273b522a80330717bba35a7de"
+      TSLA: "0x3a360e9c990f11447244f11cd921f70b321926fd"
+      NVDA: "0x309aa6851b9cf4b6746853e43e359fcb5a303ec9"
+      AAPL: "0x8cd8b13e1c10b85e5330d3a4609efe7c3bc8dc48"
+      QQQ:  "0xa10d64d606e941bd813999c0262d7a178be4865e"
+      SPY:  "0x0d949de297c5cebec68a345fbb38321efd8e309d"
+      SOL:  "0xe154cb42c3a4827d9c53d1695953323dbf2f5663"
+      XRP:  "0xd52214c367a731a68c2877f45be45a2525a0975a"
+      XAU:  "0x2a0246f565def17f5af3b72591fea42beae67699"
+      XAG:  "0x411d77266a8145fb75bd1992aece64f7808dd3f4"
+
+  - name: v2
+    data_store: "0x1D6b7C2AA9C04b8d541e924F5c97Be71fa814748"
+    role_store: "0x2274639ffB5A77901ae2277c92eFf40396fFd0B1"
+    gov_timelock: "0xA156f21C70b8B7037981107A38992B582ee40d44"
+    config_timelock: "0x9e0637C095A418cAD3C034F2E2CaB2dbe219f256"
+    usdt_token: "0x6335881872fecab922d1d83c6bae6e27c5a9209c"
+    vaults:
+      DepositVault: "0x07860Cc65DeB99Cb12d4582a7ae8123030C2d5C1"
+      WithdrawalVault: "0x78c9c8BD4ad8EbC8e65c78B77AD3F19f0b1326b4"
+      OrderVault: "0x4cDe676F61Dc2F85c83b9404833004B822721c0f"
+      HlvVault: "0x02Cf5deF6007E0E247a39571881edA95e0108B29"
+      FeeDistributorVault: "0xef4abE5D64DB1Ba92a9C2C28FfF3BC76336533e5"
+      ClaimVault: "0xA7d139EF777f10CBA540B34DFB15942B54826fB2"
+      MultichainVault: "0x127273F93FBfFdc0dFe636E7e2c0A11ADd8B7E7f"
+    markets:
+      BTC:  "0xd537cd7d937446442c62b98c10a9c303152f289a"
+      ETH:  "0x256a7cec86dbfbb29d965558ead2a93ef9e495bd"
+      BNB:  "0xdc26636bfed80e891b742d07449426cb1896946d"
+      DOGE: "0x3f6d02a30a042b420097e087bef6a1c2867ef75e"
+      TSLA: "0x4f7f9e759e81541849acb99f5c116137fc059a82"
+      NVDA: "0xcbec5e22ed9a70680069f1aefd1c56a9e4f32ba1"
+      AAPL: "0x653c985ebeed72fe871f534f43ceb3f4a87f64b7"
+      QQQ:  "0xf03cd5b36ac59d2a454429010fc551a579ff5eb7"
+      SPY:  "0xd2474c1618ca38aa1e217fc6e7a416f89df400e8"
+      SOL:  "0x5cd61498a200e4f22993bb64c72226847cce5ce0"
+      XRP:  "0xef89ae3564944a3e4a4e2e0bc2aefc85ee72efaf"
+      XAU:  "0xa97f90fb9c3a125e067e08208864a4aa6647f1db"
+      XAG:  "0x8b7445c0a0178178f3b4f79cbe66b1a46709fa6a"
+
+# Keeper wallets whose BNB balance the gas-reconciliation task snapshots.
+# Cross-referenced from cicd/infra/testnet-htzfl/victoriametrics/vmprobe/vmprobe-bsc-testnet-pool-balance.yaml
+keepers:
+  mainpool-primary: "0xCD694Bb0e8a51E02696cE074396B4212E01Ec079"
+  mainpool-multicall1: "0x85C9Beb446BB14997C00aBDfD8b1eAeD8519E379"
+  mainpool-multicall2: "0x18b4301021e808BFf216965F30B60E4b00DB96d1"
+  mainpool-multicall3: "0x9c493bc64fd003f096c4E26EA57DFaBCB3B11283"
+  mainpool-multicall4: "0x552cc14A9F50107Bc570A0bd591D58296FE57145"
+  auxpool-primary: "0x81B24C57FAbAE751fA2BF77Ba74B42288bc78A73"
+  auxpool-multicall1: "0x851D8c5d1b89dEF16b778A77Df10Be6266135CEC"
+
+# Role names mirror contracts/role/Role.sol.
+# Hashed on-chain via `keccak256(abi.encode("NAME"))`.
+role_names:
+  - ROLE_ADMIN
+  - TIMELOCK_ADMIN
+  - TIMELOCK_MULTISIG
+  - CONFIG_KEEPER
+  - LIMITED_CONFIG_KEEPER
+  - CONTROLLER
+  - GOV_TOKEN_CONTROLLER
+  - ROUTER_PLUGIN
+  - MARKET_KEEPER
+  - FEE_KEEPER
+  - FEE_DISTRIBUTION_KEEPER
+  - ORDER_KEEPER
+  - FROZEN_ORDER_KEEPER
+  - PRICING_KEEPER
+  - LIQUIDATION_KEEPER
+  - ADL_KEEPER
+  - CONTRIBUTOR_KEEPER
+  - CONTRIBUTOR_DISTRIBUTOR
+  - CLAIM_ADMIN
+  - MULTICHAIN_READER
