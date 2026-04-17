@@ -102,4 +102,43 @@ var (
 		Name: "reconciler_feature_disabled",
 		Help: "1 if the named protocol feature is paused on the given handler",
 	}, []string{"version", "feature", "handler"})
+
+	// QueueCount mirrors what the datastore-queue VMProbe was supposed to
+	// expose but cannot (blackbox-exporter contract_call has no bytes32 arg
+	// support). Spec §4.
+	QueueCount = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "reconciler_queue_count",
+		Help: "DataStore list count: order/deposit/withdrawal/position/market",
+	}, []string{"version", "list"})
+
+	// MarketOI / MarketMaxOI / MarketPoolAmount / MarketMaxPoolAmount
+	// backstop the market-oi VMProbe (same blackbox-exporter limitation).
+	// Values are scaled to USD (1e30 for OI/maxOI, 1e18 for pool USDT).
+	// Spec §5.
+	MarketOI = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "reconciler_market_oi_usd",
+		Help: "Open interest per market+side in USD",
+	}, []string{"version", "market", "side"})
+
+	MarketMaxOI = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "reconciler_market_max_oi_usd",
+		Help: "Max allowed open interest per market+side in USD",
+	}, []string{"version", "market", "side"})
+
+	MarketPoolAmount = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "reconciler_market_pool_amount_usdt",
+		Help: "USDT pool balance per market (long collateral side)",
+	}, []string{"version", "market"})
+
+	MarketMaxPoolAmount = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "reconciler_market_max_pool_amount_usdt",
+		Help: "Max allowed USDT pool balance per market",
+	}, []string{"version", "market"})
+
+	// OracleMaxPriceAge backstops the oracle-v[12] VMProbe's
+	// MAX_ORACLE_PRICE_AGE bytes32-key call. Spec §2.
+	OracleMaxPriceAge = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "reconciler_oracle_max_price_age_seconds",
+		Help: "DataStore.getUint(MAX_ORACLE_PRICE_AGE) — Oracle staleness ceiling",
+	}, []string{"version"})
 )

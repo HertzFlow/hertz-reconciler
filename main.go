@@ -61,6 +61,9 @@ func main() {
 		reconciler.Funding{C: client},
 		reconciler.KeeperGas{C: client, Keepers: cfg.Keepers},
 		reconciler.Features{C: client},
+		reconciler.Queue{C: client},
+		reconciler.MarketOI{C: client},
+		reconciler.OracleConfig{C: client},
 	}
 
 	slack := notify.NewSlack(cfg.SlackWebhookURL())
