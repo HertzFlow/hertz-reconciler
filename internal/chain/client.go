@@ -23,6 +23,7 @@ var (
 	selGetRoleMembers    = mustSelector("getRoleMembers(bytes32,uint256,uint256)")
 	selGetMinDelay       = mustSelector("getMinDelay()")
 	selErc20BalanceOf    = mustSelector("balanceOf(address)")
+	selLatestRoundData   = mustSelector("latestRoundData()")
 )
 
 func mustSelector(sig string) []byte { return crypto.Keccak256([]byte(sig))[:4] }
@@ -163,6 +164,22 @@ func (c *Client) GetMinDelay(timelock common.Address) (uint64, error) {
 		return 0, err
 	}
 	return new(big.Int).SetBytes(out).Uint64(), nil
+}
+
+// ChainlinkLatestUpdatedAt returns the `updatedAt` field of a Chainlink
+// AggregatorV3 latestRoundData() call. The full return tuple is
+// (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt,
+//  uint80 answeredInRound) packed as 5 × 32 bytes; updatedAt sits at the
+// 4th slot (offset 96..128).
+func (c *Client) ChainlinkLatestUpdatedAt(feed common.Address) (uint64, error) {
+	out, err := c.call(feed, selLatestRoundData)
+	if err != nil {
+		return 0, err
+	}
+	if len(out) < 128 {
+		return 0, fmt.Errorf("chainlink latestRoundData short response: %d bytes", len(out))
+	}
+	return new(big.Int).SetBytes(out[96:128]).Uint64(), nil
 }
 
 func (c *Client) call(to common.Address, data []byte) ([]byte, error) {

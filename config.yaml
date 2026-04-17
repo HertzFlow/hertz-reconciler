@@ -54,6 +54,15 @@ versions:
       XRP:  "0xd52214c367a731a68c2877f45be45a2525a0975a"
       XAU:  "0x2a0246f565def17f5af3b72591fea42beae67699"
       XAG:  "0x411d77266a8145fb75bd1992aece64f7808dd3f4"
+    # Handler addresses sourced from HertzFlow/contracts-v2 deployments/bscTestnet/.
+    # Used by the Features task to probe per-handler feature-flag keys.
+    handlers:
+      DepositHandler:     "0x4DecA4fb82620A13931E7C561a12c1cF3e7c5F9d"
+      WithdrawalHandler:  "0x81F39E66A3512DcDD6f50EaE9Ffb91e1Dc543d36"
+      OrderHandler:       "0x9B3C1Ba42D6082327e63bd27EAC53D5a431DCDb8"
+      AdlHandler:         "0x75E0102d61b9678B222bE827D85A79899eBFD47a"
+      ClaimHandler:       "0xE1460A1AeF26e3605a53E9BB3D8f3f07d6eAFe70"
+      LiquidationHandler: "0xf6830dCD740Aae3fD732d3552381cC9907852974"
 
   - name: v2
     data_store: "0x1D6b7C2AA9C04b8d541e924F5c97Be71fa814748"
@@ -83,6 +92,14 @@ versions:
       XRP:  "0xef89ae3564944a3e4a4e2e0bc2aefc85ee72efaf"
       XAU:  "0xa97f90fb9c3a125e067e08208864a4aa6647f1db"
       XAG:  "0x8b7445c0a0178178f3b4f79cbe66b1a46709fa6a"
+    # Handler addresses sourced from HertzFlow/contracts-v2-bsc deployments/bscTestnet/.
+    handlers:
+      DepositHandler:    "0xeECedbE5695cCC7DADF3f462F3a8fF0073bbfd2c"
+      WithdrawalHandler: "0xac68044960a8b3BCFFb3431AeB7d3CA4392623bE"
+      OrderHandler:      "0x8836DE66A897C36201f02f89726dbD49c0a6b307"
+      AdlHandler:        "0xBe936059b801B32e41c9800B07744915dBAbbe69"
+      ClaimHandler:      "0xd0111f38D0Fd909871Ebd9E3bF8473fDd3bA99d6"
+      HlvDepositHandler: "0x02e01cF2a311B64E8eb5a9034A4fa8d15BF8e7Bc"
 
 # Keeper wallets whose BNB balance the gas-reconciliation task snapshots.
 # Cross-referenced from cicd/infra/testnet-htzfl/victoriametrics/vmprobe/vmprobe-bsc-testnet-pool-balance.yaml

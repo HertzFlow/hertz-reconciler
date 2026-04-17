@@ -141,4 +141,12 @@ var (
 		Name: "reconciler_oracle_max_price_age_seconds",
 		Help: "DataStore.getUint(MAX_ORACLE_PRICE_AGE) — Oracle staleness ceiling",
 	}, []string{"version"})
+
+	// ChainlinkFeedAge replaces the broken oracle-v[12] VMProbe's
+	// Chainlink call (the Hertz wrapper has no latestRoundData; we reach the
+	// real Chainlink AggregatorV3 feeds directly). Spec §2.
+	ChainlinkFeedAge = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "reconciler_chainlink_feed_age_seconds",
+		Help: "Time since Chainlink AggregatorV3 latestRoundData updated",
+	}, []string{"feed"})
 )

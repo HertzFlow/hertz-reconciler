@@ -64,6 +64,7 @@ func main() {
 		reconciler.Queue{C: client},
 		reconciler.MarketOI{C: client},
 		reconciler.OracleConfig{C: client},
+		reconciler.Chainlink{C: client},
 	}
 
 	slack := notify.NewSlack(cfg.SlackWebhookURL())
