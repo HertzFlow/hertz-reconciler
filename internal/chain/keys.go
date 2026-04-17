@@ -128,3 +128,18 @@ func FundingFeeAmountPerSizeKey(market, collateralToken common.Address, isLong b
 func RoleHash(name string) common.Hash {
 	return rootHash(name)
 }
+
+// FeatureKeyRoot = keccak256(abi.encode(NAME)). The globally-scoped feature
+// flag (no handler context). Many GMX-style protocols do not store global
+// flags here; the read is harmless (returns false) when the protocol only
+// uses per-handler keys.
+func FeatureKeyRoot(name string) common.Hash {
+	return rootHash(name)
+}
+
+// FeatureKeyForHandler = keccak256(abi.encode(NAME, handler)). The
+// per-handler feature flag (CONFIG_KEEPER pauses createOrder, executeDeposit
+// etc on a specific handler).
+func FeatureKeyForHandler(name string, handler common.Address) common.Hash {
+	return keccakOf(rootHash(name).Bytes(), addressPadded(handler))
+}

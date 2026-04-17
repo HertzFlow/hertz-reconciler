@@ -93,4 +93,13 @@ var (
 		Name: "reconciler_up",
 		Help: "1 when reconciler process is healthy",
 	})
+
+	// FeatureDisabled exposes the result of DataStore.getBool for known
+	// feature keys (spec §7 P1). 1 = paused, 0 = active. Labelled by feature
+	// constant name and by handler — "root" is the globally-scoped probe,
+	// other handler labels come from VersionConfig.Handlers.
+	FeatureDisabled = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "reconciler_feature_disabled",
+		Help: "1 if the named protocol feature is paused on the given handler",
+	}, []string{"version", "feature", "handler"})
 )

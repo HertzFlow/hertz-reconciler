@@ -43,6 +43,10 @@ type VersionConfig struct {
 	UsdtToken      string            `yaml:"usdt_token"`
 	Vaults         map[string]string `yaml:"vaults"`
 	Markets        map[string]string `yaml:"markets"`
+	// Handlers (DepositHandler/WithdrawalHandler/OrderHandler/AdlHandler/...)
+	// drive per-handler feature-flag probes (spec §7). Empty map is fine —
+	// the Features task always probes the root-only key shape regardless.
+	Handlers map[string]string `yaml:"handlers,omitempty"`
 }
 
 type Config struct {
